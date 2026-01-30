@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+let userName = prompt("Nhập tên người dùng:");
+let roleInput = prompt("Nhập vai trò :");
+let balanceInput = prompt("Nhập số dư tài khoản:");
+let cardStatusInput = prompt("Nhập trạng thái thẻ (true nếu hoạt động):");
+let lateDaysInput = prompt("Nhập số ngày quá hạn:");
+
+let role = roleInput ? roleInput.toLowerCase() : "";
+let balance = Number(balanceInput);
+let cardStatus = cardStatusInput === "true";
+let lateDays = Number(lateDaysInput);
+
+switch (role) {
+  case "admin":
+    roleMessage = "Chào Admin, bạn có toàn quyền hệ thống";
+    break;
+  case "student":
+    roleMessage = "Chào sinh viên, bạn có thể mượn sách";
+    break;
+  case "guest": 
+    roleMessage = "Chào khách, bạn chỉ có thể đọc tại chỗ";
+    break;
+  default:
+    roleMessage = "Lỗi: Vai trò không hợp lệ!";
+}
+
+let borrowResult = "";
+let rejectReason = "";
+
+if (!userName) {
+  rejectReason = "Tên người dùng bị trống";
+}
+
+else if (role !== "admin" && role !== "student") {
+  rejectReason = "Không đủ quyền mượn sách";
+}
+
+else if (balance <= 0) {
+  rejectReason = "Số dư tài khoản không đủ";
+}
+
+else if (!cardStatus) {
+  rejectReason = "Thẻ thư viện bị khóa";
+}
+
+if (rejectReason === "") {
+  borrowResult = "ĐƯỢC PHÉP MƯỢN SÁCH";
+} else {
+  borrowResult = "YÊU CẦU BỊ TỪ CHỐI (" + rejectReason + ")";
+}
+
+let lateStatus = "";
+let fine = 0;
+
+if (lateDays <= 0) {
+  lateStatus = "Cảm ơn bạn đã trả đúng hạn";
+  fine = 0;
+}
+
+else if (lateDays <= 5) {
+  lateStatus = `Quá hạn ${lateDays} ngày`;
+  fine = lateDays * 5000;
+}
+
+else if (lateDays <= 10) {
+  lateStatus = `Quá hạn ${lateDays} ngày`;
+  fine = lateDays * 10000;
+}
+
+else {
+  lateStatus = `Quá hạn ${lateDays} ngày - TÀI KHOẢN BỊ KHÓA`;
+  fine = 200000;
+}
+
+console.log(`--- HỆ THỐNG MƯỢN TRẢ ---
+
+Người dùng: ${userName ? userName.toUpperCase() : "KHÔNG XÁC ĐỊNH"}
+
+Quyền hạn: ${roleMessage}
+
+Kết quả mượn: ${borrowResult}
+
+Tình trạng trả sách: ${lateStatus}
+
+Tiền phạt: ${fine} VNĐ`);
+
+
+
+    </script>
+    
+</body>
+</html>
