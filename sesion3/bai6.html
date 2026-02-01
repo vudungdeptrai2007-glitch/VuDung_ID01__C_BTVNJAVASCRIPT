@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    let tongPhanHoi = 0;
+
+let khieuNaiNhe = 0;
+let khieuNaiTrungBinh = 0;
+let khieuNaiNghiemTrong = 0;
+
+let deXuatCaiThien = 0;
+let phanHoiTichCuc = 0;
+
+while (true) {
+    let tiepTuc = prompt(
+        "Có khiếu nại/phản hồi mới từ bạn đọc không? (có/không)"
+    ).toLowerCase();
+
+    if (tiepTuc === "không") {
+        break;
+    }
+
+    if (tiepTuc !== "có") {
+        alert("Vui lòng nhập 'có' hoặc 'không'");
+        continue;
+    }
+
+    let tenBanDoc = "";
+    while (tenBanDoc.trim() === "") {
+        tenBanDoc = prompt("Nhập tên bạn đọc (không được để trống):");
+    }
+
+    let maThe = prompt("Nhập mã thẻ bạn đọc (có thể để trống):");
+
+    let loai = parseInt(
+        prompt(
+            "Nhập loại phản hồi:\n1 = Khiếu nại\n2 = Đề xuất cải thiện\n3 = Phản hồi tích cực"
+        )
+    );
+
+    let noiDung = prompt("Nhập nội dung ngắn gọn:");
+
+    tongPhanHoi++;
+
+    if (loai === 1) {
+        let mucDo = parseInt(
+            prompt(
+                "Nhập mức độ nghiêm trọng:\n1 = Nhẹ\n2 = Trung bình\n3 = Nghiêm trọng"
+            )
+        );
+
+        if (mucDo === 1) {
+            khieuNaiNhe++;
+            console.log("Ghi nhận khiếu nại mức độ nhẹ");
+        } 
+        else if (mucDo === 2) {
+            khieuNaiTrungBinh++;
+            console.log("Ghi nhận khiếu nại mức độ trung bình");
+        } 
+        else if (mucDo === 3) {
+            khieuNaiNghiemTrong++;
+            console.log("Ghi nhận khiếu nại nghiêm trọng - cần báo cáo lãnh đạo");
+        } 
+        else {
+            console.log("Mức độ không hợp lệ");
+        }
+
+    } 
+    else if (loai === 2) {
+        deXuatCaiThien++;
+        console.log("Ghi nhận đề xuất cải thiện");
+    } 
+    else if (loai === 3) {
+        phanHoiTichCuc++;
+        console.log("Ghi nhận phản hồi tích cực");
+    } 
+    else {
+        console.log("Loại phản hồi không hợp lệ");
+    }
+}
+
+console.log("===== BÁO CÁO CUỐI CA =====");
+console.log("Tổng số phản hồi/khiếu nại: " + tongPhanHoi);
+console.log("Khiếu nại nghiêm trọng (mức 3): " + khieuNaiNghiemTrong);
+console.log("Khiếu nại trung bình (mức 2): " + khieuNaiTrungBinh);
+console.log("Khiếu nại nhẹ (mức 1): " + khieuNaiNhe);
+console.log("Số đề xuất cải thiện: " + deXuatCaiThien);
+console.log("Số phản hồi tích cực: " + phanHoiTichCuc);
+
+    </script>
+</body>
+</html>

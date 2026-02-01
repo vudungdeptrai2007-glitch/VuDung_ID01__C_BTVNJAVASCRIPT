@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    let soLanThanhCong = 0;
+let soLanThatBai = 0;
+
+while (true) {
+    let tiepTuc =prompt("Có yêu cầu gia hạn mới không? (có/không)").toLowerCase();
+
+    if (tiepTuc === "không") {
+        break;
+    }
+
+    if (tiepTuc !=="có") {
+    alert("Vui lòng nhập 'có' hoặc 'không'");
+        continue;
+    }
+
+    let tenBanDoc = prompt("Nhập tên bạn đọc:");
+    let tenSach = prompt("Nhập tên sách:");
+    let soNgayDaMuon = parseInt(prompt("Nhập số ngày đã mượn:"));
+    let soNgayGiaHan = parseInt(prompt("Nhập số ngày muốn gia hạn thêm:"));
+
+    let tongSoNgay = soNgayDaMuon + soNgayGiaHan;
+
+    if (tongSoNgay> 60) {
+    alert("Không được gia hạn: Tổng thời gian vượt quá 60 ngày tối đa");
+        soLanThatBai++;
+    } 
+    else if (soNgayDaMuon> 45) {
+        alert("Không được gia hạn: Đã mượn quá lâu (>45 ngày)");
+        soLanThatBai++;
+    } 
+    else {
+        alert("Gia hạn thành công");
+        soLanThanhCong++;
+    }
+}
+
+alert(
+    "Thống kê ca làm việc:\n" +
+    "Số lần gia hạn thành công: " + soLanThanhCong + "\n" +
+    "Số lần gia hạn không thành công: " + soLanThatBai
+);
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let matKhauDung = "admin123";
+let dem = 0;
+let dangNhapThanhCong = false;
+
+while (dem < 3) {
+    let matKhau = prompt("Nhập mật khẩu:");
+
+    if (matKhau === matKhauDung) {
+        console.log("Đăng nhập thành công");
+        dangNhapThanhCong = true;
+        break;
+    } else {
+        dem++;
+        console.log("Sai mật khẩu! Còn " + (3-dem) + " lần");
+    }
+}
+if (!dangNhapThanhCong) {
+    console.log("thử lại sau 36 năm");
+}
+
+
+    </script>
+</body>
+</html>                     

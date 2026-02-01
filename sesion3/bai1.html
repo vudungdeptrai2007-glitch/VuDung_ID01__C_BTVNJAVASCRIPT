@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let soLuotMuon = Number(prompt("Hôm nay có bao nhiêu lượt mượn sách?"));
+
+for (let i = 1; i <= soLuotMuon; i++) {
+    console.log("----- Lượt mượn thứ " + i + " -----");
+
+    let tenNguoiMuon = prompt("Nhập tên người mượn:");
+    let tenSach = prompt("Nhập tên sách:");
+    let soNgayMuon = Number(prompt("Nhập số ngày mượn (1 - 30):"));
+
+    if (soNgayMuon > 14) {
+        console.log("Người mượn: " + tenNguoiMuon);
+        console.log("Sách: " + tenSach);
+        console.log("Cảnh báo: Thời gian mượn vượt quy định (tối đa 14 ngày)");
+    } else {
+        console.log("Người mượn: " + tenNguoiMuon);
+        console.log("Sách: " + tenSach);
+        console.log("Mượn thành công");
+    }
+}
+
+console.log("===== THỐNG KÊ CUỐI NGÀY =====");
+console.log("Tổng số lượt mượn: " + soLuotMuon);
+
+    </script>
+</body>
+</html>
