@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+
+const USERNAME = "admin";
+const PASSWORD = "12345";
+let loginCount = 0;
+let isLogin = false;
+
+while (loginCount < 3) {
+    let inputUser = prompt("Nhập tài khoản:");
+    let inputPass = prompt("Nhập mật khẩu:");
+
+    if (inputUser !== USERNAME) {
+        alert("Sai Tài khoản");
+    } else if (inputPass !== PASSWORD) {
+        alert("Sai Mật khẩu");
+    } else {
+        alert("Đăng nhập thành công!");
+        isLogin = true;
+        break;
+    }
+    loginCount++;
+}
+
+if (!isLogin) {
+    alert("Tài khoản đã bị khóa");
+} else {
+
+    let choice;
+    do {
+        choice = prompt(
+            "===== MENU CHỨC NĂNG =====\n" +
+            "1. Phân loại mã số sách\n" +
+            "2. Thiết kế sơ đồ kho sách\n" +
+            "3. Dự toán phí bảo trì sách\n" +
+            "4. Tìm mã số sách may mắn\n" +
+            "5. Thoát\n" +
+            "Nhập lựa chọn (1-5):"
+        );
+
+        switch (choice) {
+
+            case "1":
+                let total = 0;
+                let even = 0;
+                let odd = 0;
+
+                while (true) {
+                    let num = Number(prompt("Nhập mã số sách (0 để kết thúc):"));
+                    if (num === 0) break;
+
+                    total++;
+                    if (num % 2 === 0) even++;
+                    else odd++;
+                }
+
+                alert(
+                    "Tổng số mã sách: " + total +
+                    "\nSố chẵn (Sách khoa học): " + even +
+                    "\nSố lẻ (Sách nghệ thuật): " + odd
+                );
+                break;
+
+            case "2":
+                let rows = Number(prompt("Nhập số Hàng:"));
+                let cols = Number(prompt("Nhập số Cột:"));
+                let result = "";
+
+                for (let i = 1; i <= rows; i++) {
+                    for (let j = 1; j <= cols; j++) {
+                        if (i === j) {
+                            result += `[${i}-${j}] (Kệ ưu tiên)  `;
+                        } else {
+                            result += `[${i}-${j}]  `;
+                        }
+                    }
+                    result += "\n";
+                }
+
+                console.log(result);
+                alert("Sơ đồ kho đã được in ra Console");
+                break;
+
+            case "3":
+                let bookCount = Number(prompt("Nhập số lượng sách:"));
+                let cost = Number(prompt("Nhập phí bảo trì 1 cuốn (đ):"));
+                let years = Number(prompt("Nhập số năm dự toán:"));
+
+                let output = "Năm | Phí/1 cuốn | Tổng phí\n";
+                for (let i = 1; i <= years; i++) {
+                    let totalCost = bookCount * cost;
+                    output += `${i} | ${cost.toFixed(0)}đ | ${totalCost.toFixed(0)}đ\n`;
+                    cost *= 1.1;
+                }
+
+                console.log(output);
+                alert("Bảng phí bảo trì đã được in ra Console");
+                break;
+
+            case "4":
+                let N = Number(prompt("Nhập N:"));
+                let lucky = [];
+                
+                for (let i = 1; i <= N; i++) {
+                    if (i % 3 === 0 && i % 5 !== 0) {
+                        lucky.push(i);
+                    }
+                }
+
+                console.log("Mã số may mắn:", lucky.join(", "));
+                alert("Có tổng cộng " + lucky.length + " mã số sách may mắn");
+                break;
+
+            case "5":
+                alert("Hệ thống đang đăng xuất...");
+                break;
+
+            default:
+                alert("Lựa chọn không hợp lệ!");
+        }
+
+    } while (choice !== "5");
+}
+
+    </script>
+
+
+
+
+
+
+    
+    
+</body>
+</html>
