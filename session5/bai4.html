@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    let booksId = [];
+let booksName = [];
+let bookStatus = [];
+
+let n = parseInt(prompt("Có bao nhiêu cuốn sách cần kiểm tra tình trạng hôm nay?"));
+
+for (let i = 0; i < n; i++) {
+    let id = "";
+    while (id.trim() === "") {
+        id = prompt(`Nhập mã sách thứ ${i + 1}:`);
+    }
+
+    let name = "";
+    while (name.trim() === "") {
+        name = prompt(`Nhập tên sách thứ ${i + 1}:`);
+    }
+
+    let statusChoice;
+    do {
+        statusChoice = parseInt(prompt(
+            `Nhập tình trạng ban đầu của sách thứ ${i + 1}:\n1. Hỏng nhẹ\n2. Hỏng nặng\n3. Cần sửa gấp`
+        ));
+    } while (![1, 2, 3].includes(statusChoice));
+
+    let status = statusChoice === 1 ? "Hỏng nhẹ"
+               : statusChoice === 2 ? "Hỏng nặng"
+               : "Cần sửa gấp";
+
+    booksId.push(id);
+    booksName.push(name);
+    bookStatus.push(status);
+}
+
+function printList() {
+    console.log("Danh sách sách hiện tại:");
+    for (let i = 0; i < booksId.length; i++) {
+        console.log(`${i + 1}. ${booksId[i]} - ${booksName[i]} - ${bookStatus[i]}`);
+    }
+}
+
+printList();
+
+let choice;
+do {
+    choice = parseInt(prompt(
+        "Bạn muốn làm gì?\n1. Sửa tình trạng sách\n2. Loại bỏ sách\n0. Kết thúc và in báo cáo"
+    ));
+
+    if (choice === 1) {
+        let editId = prompt("Nhập mã sách cần sửa:");
+        let index = -1;
+
+        for (let i = 0; i < booksId.length; i++) {
+            if (booksId[i] === editId) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index !== -1) {
+            let newStatusChoice;
+            do {
+                newStatusChoice = parseInt(prompt(
+                    "Chọn tình trạng mới:\n1. Hỏng nhẹ\n2. Hỏng nặng\n3. Cần sửa gấp\n4. Đã sửa xong\n5. Loại bỏ"
+                ));
+            } while (![1, 2, 3, 4, 5].includes(newStatusChoice));
+
+            let newStatus = newStatusChoice === 1 ? "Hỏng nhẹ"
+                          : newStatusChoice === 2 ? "Hỏng nặng"
+                          : newStatusChoice === 3 ? "Cần sửa gấp"
+                          : newStatusChoice === 4 ? "Đã sửa xong"
+                          : "Loại bỏ";
+
+            bookStatus[index] = newStatus;
+        }
+
+        printList();
+    }
+
+    if (choice === 2) {
+        let deleteId = prompt("Nhập mã sách cần xóa:");
+        let index = -1;
+
+        for (let i = 0; i < booksId.length; i++) {
+            if (booksId[i] === deleteId) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index !== -1) {
+            booksId.splice(index, 1);
+            booksName.splice(index, 1);
+            bookStatus.splice(index, 1);
+        }
+
+        printList();
+    }
+
+} while (choice !== 0);
+
+let repairedCount = 0;
+let removedCount = 0;
+
+for (let i = 0; i < bookStatus.length; i++) {
+    if (bookStatus[i] === "Đã sửa xong") repairedCount++;
+    if (bookStatus[i] === "Loại bỏ") removedCount++;
+}
+
+console.log("BÁO CÁO CUỐI");
+console.log("Tổng số sách còn lại:", booksId.length);
+console.log("Số sách đã sửa xong:", repairedCount);
+console.log("Số sách loại bỏ:", removedCount);
+
+if (booksId.length > 0) {
+    console.log("Danh sách sách còn lại:");
+    for (let i = 0; i < booksId.length; i++) {
+        console.log(`${booksId[i]} - ${booksName[i]} - ${bookStatus[i]}`);
+    }
+} else {
+    console.log("Không còn sách nào trong danh sách.");
+}
+
+    </script>
+    
+</body>
+</html>

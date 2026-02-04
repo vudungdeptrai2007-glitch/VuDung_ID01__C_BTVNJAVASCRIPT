@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let readerCardIds = [];
+let readerNames = [];
+let borrowedBookCodes = [];
+let overdueDays = [];
+
+let n = parseInt(prompt("Hôm nay có bao nhiêu bạn đọc bị ghi nhận quá hạn? "));
+while (isNaN(n) || n <= 0) {
+    n = parseInt(prompt("Nhập lại số lượng bạn đọc (số nguyên dương): "));
+}
+
+for (let i = 0; i < n; i++) {
+    let cardId;
+    do {
+        cardId = prompt(`Nhập mã thẻ bạn đọc thứ ${i + 1}: `).trim();
+    } while (cardId === "" || readerCardIds.includes(cardId));
+
+    let name;
+    do {
+        name = prompt(`Nhập tên bạn đọc thứ ${i + 1}: `).trim();
+    } while (name === "");
+
+    let books = prompt(`Nhập các mã sách đang mượn của bạn đọc thứ ${i + 1} (cách nhau bởi dấu phẩy): `).trim();
+
+    let days;
+    do {
+        days = parseInt(prompt(`Nhập số ngày quá hạn của bạn đọc thứ ${i + 1}: `));
+    } while (isNaN(days) || days < 0);
+
+    readerCardIds.push(cardId);
+    readerNames.push(name);
+    borrowedBookCodes.push(books);
+    overdueDays.push(days);
+}
+
+let countOver10 = 0;
+for (let i = 0; i < n; i++) {
+    if (overdueDays[i] >= 10) {
+        countOver10++;
+    }
+}
+
+console.log(`Tổng số bạn đọc có quá hạn ≥ 10 ngày: ${countOver10}`);
+
+console.log("Danh sách mã thẻ bạn đọc đang mượn cả sách bắt đầu bằng 'JS' và 'PYT':");
+for (let i = 0; i < n; i++) {
+    let codes = borrowedBookCodes[i].split(",");
+    let hasJS = false;
+    let hasPYT = false;
+
+    for (let j = 0; j < codes.length; j++) {
+        let code = codes[j].trim().toUpperCase();
+        if (code.startsWith("JS")) hasJS = true;
+        if (code.startsWith("PYT")) hasPYT = true;
+    }
+
+    if (hasJS && hasPYT) {
+        console.log(readerCardIds[i]);
+    }
+}
+
+let maxIndex = 0;
+for (let i = 1; i < n; i++) {
+    if (overdueDays[i] > overdueDays[maxIndex]) {
+        maxIndex = i;
+    }
+}
+
+console.log("Bạn đọc có số ngày quá hạn cao nhất:");
+console.log(readerNames[maxIndex]);
+
+    </script>
+</body>
+</html>

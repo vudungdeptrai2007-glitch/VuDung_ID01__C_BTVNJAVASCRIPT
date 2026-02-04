@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    let booksId = [];
+let booksName = [];
+let inventoryQuantity = [];
+
+let n = parseInt(prompt("Có bao nhiêu loại sách cần kiểm tra bổ sung hôm nay?"));
+
+for (let i = 0; i < n; i++) {
+    let id = "";
+    while (id.trim() === "") {
+        id = prompt(`Nhập mã sách thứ ${i + 1}:`);
+    }
+
+    let name = "";
+    while (name.trim() === "") {
+        name = prompt(`Nhập tên sách thứ ${i + 1}:`);
+    }
+
+    let quantity;
+    do {
+        quantity = parseInt(prompt(`Nhập số lượng tồn kho của sách thứ ${i + 1}:`));
+    } while (isNaN(quantity) || quantity < 0);
+
+    booksId.push(id);
+    booksName.push(name);
+    inventoryQuantity.push(quantity);
+}
+
+console.log("Tổng số loại sách đang kiểm tra:", booksId.length);
+
+let lowStockCount = 0;
+for (let i = 0; i < inventoryQuantity.length; i++) {
+    if (inventoryQuantity[i] <= 5) {
+        lowStockCount++;
+    }
+}
+console.log("Số lượng sách có tồn kho ≤ 5 bản:", lowStockCount);
+
+console.log("Mã sách đã hết hàng (tồn kho = 0):");
+for (let i = 0; i < inventoryQuantity.length; i++) {
+    if (inventoryQuantity[i] === 0) {
+        console.log(booksId[i]);
+    }
+}
+
+    </script>
+</body>
+</html>

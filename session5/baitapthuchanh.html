@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let books = ["Nha Gia Kim", "Dac Nhan Tam", "Tuan Lam Viec 4 Gio"];
+
+let choice;
+
+do {
+    choice = prompt(
+        "--- THƯ VIỆN KHOA HỌC ---\n" +
+        "1. Xem danh sách\n" +
+        "2. Nhập sách mới\n" +
+        "3. Mượn sách (Xóa)\n" +
+        "4. Sửa tên sách\n" +
+        "5. Sắp xếp kệ\n" +
+        "0. Thoát\n\n" +
+        "Bạn chọn:"
+    );
+
+    switch (choice) {
+        case "1":
+            console.log(`=> Danh sách hiện tại (${books.length} cuốn):`);
+            for (let i = 0; i < books.length; i++) {
+                console.log(`${i + 1}. ${books[i]}`);
+            }
+            break;
+
+        case "2":
+            let newBook = prompt("Nhập tên sách mới:");
+            if (newBook) {
+                books.push(newBook);
+                console.log("=> Đã thêm thành công!");
+            }
+            break;
+
+        case "3":
+            let borrowBook = prompt("Nhập tên sách muốn mượn:");
+            let indexBorrow = books.indexOf(borrowBook);
+
+            if (indexBorrow === -1) {
+                console.log(`=> Lỗi: Không tìm thấy sách ${borrowBook}!`);
+            } else {
+                books.splice(indexBorrow, 1);
+                console.log(`=> Đã cho mượn cuốn '${borrowBook}'.`);
+            }
+            break;
+
+        case "4":
+            let oldBook = prompt("Nhập tên sách cũ cần sửa:");
+            let indexEdit = books.indexOf(oldBook);
+
+            if (indexEdit === -1) {
+                console.log("=> Không tìm thấy sách cần sửa!");
+            } else {
+                let newName = prompt("Nhập tên sách mới:");
+                books[indexEdit] = newName;
+                console.log("=> Đã cập nhật tên sách!");
+            }
+            break;
+
+        case "5":
+            books.sort();
+            console.log("=> Danh sách sau khi sắp xếp:");
+            for (let i = 0; i < books.length; i++) {
+                console.log(`${i + 1}. ${books[i]}`);
+            }
+            break;
+
+        case "0":
+            console.log("=> Đã thoát chương trình.");
+            break;
+
+        default:
+            console.log("=> Lựa chọn không hợp lệ!");
+    }
+
+} while (choice !== "0");
+
+    </script>
+</body>
+</html>
