@@ -10,112 +10,120 @@
 
 <body>
     <script>
-        function libraryManagementSystem() {
-            // --- A. CHỨC NĂNG BẢO MẬT ---
-            let attempts = 0;
-            while (attempts < 3) {
-                let user = prompt("Tên đăng nhập:");
-                let pass = prompt("Mật khẩu:");
+let username, password;
+let maxLogin = 3;
+let isLogin = false;
 
-                if (user === "admin" && pass === "12345") {
-                    alert("Đăng nhập thành công!");
-                    break;
-                } else {
-                    attempts++;
-                    if (attempts === 3) {
-                        alert("Tài khoản đã bị khóa!");
-                        return; // Thoát chương trình
-                    }
-                    alert(`Sai thông tin! Bạn còn ${3 - attempts} lần thử.`);
-                }
-            }
+while (maxLogin > 0) {
+  username = prompt("Nhập tài khoản:");
+  password = prompt("Nhập mật khẩu:");
 
-            // --- B. KHỞI TẠO DỮ LIỆU ---
-            let libraries = ["Toán", "Văn", "Anh"];
-            let choice;
+  if (username === "admin" && password === "12345") {
+    console.log("Đăng nhập thành công!");
+    isLogin = true;
+    break;
+  } else {
+    maxLogin--;
+    alert("Sai tài khoản hoặc mật khẩu! Còn " + maxLogin + " lần.");
+  }
+}
 
-            // --- C. HỆ THỐNG MENU ---
-            do {
-                choice = prompt(`--- MENU QUẢN LÝ ---
-1. Nhập thêm lô sách mới
-2. Hiển thị danh sách sách
-3. Tìm kiếm sách
-4. Cập nhật tên sách
-5. Đảo ngược thứ tự kệ sách
-6. Nhập kho từ nguồn khác
-7. Thoát chương trình
-Vui lòng chọn (1-7):`);
+if (!isLogin) {
+  console.log("Tài khoản đã bị khóa");
+} else {
 
-                switch (choice) {
-                    case "1": // Nhập lô sách
-                        let input = prompt("Nhập danh sách tên sách (cách nhau bởi dấu phẩy):");
-                        if (input) {
-                            let newBooks = input.split(","); // Tách chuỗi thành mảng
-                            newBooks.forEach(item => {
-                                let name = item.trim();
-                                if (name !== "") libraries.push(name);
-                            });
-                            alert(`Đã thêm thành công ${newBooks.length} cuốn sách mới.`);
-                        }
-                        break;
+  let libraries = ["Toán", "Văn", "Anh"];
+  let choice;
 
-                    case "2": // Hiển thị danh sách (In kết quả)
-                        console.clear();
-                        console.log("--- DANH SÁCH SÁCH HIỆN CÓ ---");
-                        // Dùng map để tạo danh sách có số thứ tự
-                        let listShow = libraries.map((book, i) => `${i + 1}. ${book}`);
-                        console.log(listShow.join("\n"));
-                        alert("KẾT QUẢ TRONG CONSOLE:\n" + listShow.join("\n"));
-                        break;
+  do {
+    choice = prompt(
+      "===== MENU QUẢN LÝ THƯ VIỆN =====\n" +
+      "1. Nhập thêm lô sách mới\n" +
+      "2. Hiển thị danh sách sách\n" +
+      "3. Tìm kiếm sách\n" +
+      "4. Cập nhật tên sách\n" +
+      "5. Đảo ngược thứ tự kệ sách\n" +
+      "6. Nhập kho từ nguồn khác\n" +
+      "7. Thoát chương trình\n" +
+      "Nhập lựa chọn (1-7):"
+    );
 
-                    case "3": // Tìm kiếm
-                        let findName = prompt("Nhập tên cuốn sách cần tìm:");
-                        let pos = libraries.indexOf(findName);
-                        if (pos !== -1) {
-                            alert(`Sách "${findName}" được tìm thấy tại vị trí (index) ${pos}`);
-                        } else {
-                            alert("Không tìm thấy sách trong kho.");
-                        }
-                        break;
+    switch (choice) {
 
-                    case "4": // Cập nhật
-                        let oldName = prompt("Nhập tên sách cần sửa:");
-                        let editIdx = libraries.indexOf(oldName);
-                        if (editIdx !== -1) {
-                            let newName = prompt(`Tìm thấy sách. Nhập tên mới cho "${oldName}":`);
-                            libraries[editIdx] = newName;
-                            alert("Cập nhật thành công!");
-                        } else {
-                            alert("Sách không tồn tại để sửa.");
-                        }
-                        break;
+      case "1": {
+        let input = prompt("Nhập tên các sách (phân cách bằng dấu phẩy):");
+        let newBooks = input.split(",").map(book => book.trim()).filter(book => book !== "");
 
-                    case "5": // Đảo ngược
-                        libraries.reverse();
-                        console.clear();
-                        console.log("--- DANH SÁCH SAU KHI ĐẢO NGƯỢC ---");
-                        libraries.forEach((book, i) => console.log(`Vị trí index [${i}]: ${book}`));
-                        alert("Đã đảo ngược kệ sách. Kiểm tra Console!");
-                        break;
+        libraries.push(...newBooks);
+        console.log(`Đã thêm ${newBooks.length} cuốn sách vào kho`);
+        break;
+      }
 
-                    case "6": // Nhập kho nguồn khác
-                        let extra = ["Sách Kỹ Năng", "Truyện Tranh"];
-                        libraries = libraries.concat(extra);
-                        alert("Đã gộp kho sách thành công.");
-                        break;
-
-                    case "7":
-                        alert("Hẹn gặp lại!");
-                        break;
-
-                    default:
-                        if (choice !== null) alert("Lựa chọn không hợp lệ!");
-                }
-            } while (choice !== "7" && choice !== null);
+      case "2": {
+        if (libraries.length === 0) {
+          console.log("Kho sách trống");
+        } else {
+          console.log("Danh sách sách:");
+          libraries.forEach((book, index) => {
+            console.log(`${index + 1}. ${book}`);
+          });
         }
+        break;
+      }
+      case "3": {
+        let searchName = prompt("Nhập tên sách cần tìm:");
+        let index = libraries.indexOf(searchName);
 
-        // Chạy chương trình
-        libraryManagementSystem();
+        if (index !== -1) {
+          console.log(`Sách "${searchName}" được tìm thấy tại vị trí ${index}`);
+        } else {
+          console.log("Không tìm thấy");
+        }
+        break;
+      }
+
+      case "4": {
+        let oldName = prompt("Nhập tên sách cần sửa:");
+        let index = libraries.indexOf(oldName);
+
+        if (index !== -1) {
+          let newName = prompt("Nhập tên sách mới:");
+          libraries[index] = newName;
+          console.log("Cập nhật tên sách thành công");
+        } else {
+          console.log("Sách không tồn tại");
+        }
+        break;
+      }
+
+      case "5": {
+        libraries.reverse();
+        console.log("Danh sách sách sau khi đảo:");
+        libraries.forEach((book, index) => {
+          console.log(`${index}: ${book}`);
+        });
+        break;
+      }
+
+      case "6": {
+        let branchBooks = ["Sách Kỹ Năng", "Truyện Tranh"];
+        libraries = libraries.concat(branchBooks);
+        console.log("Đã gộp kho sách thành công");
+        break;
+      }
+
+      case "7": {
+        console.log("Hẹn gặp lại!");
+        break;
+      }
+
+      default:
+        alert("Lựa chọn không hợp lệ!");
+    }
+
+  } while (choice !== "7");
+}
+
     </script>
 </body>
 
