@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let playerIds = [];
+let playerPositions = [];
+
+let n = parseInt(prompt("Có bao nhiêu cầu thủ cần nhập vào đội bóng?"));
+
+for (let i = 0; i < n; i++) {
+    let id;
+    let exists;
+
+    do {
+        exists = false;
+        id = prompt("Nhập mã cầu thủ:");
+        for (let j = 0; j < playerIds.length; j++) {
+            if (playerIds[j] === id) {
+                exists = true;
+                alert("Mã cầu thủ đã tồn tại, nhập lại!");
+                break;
+            }
+        }
+    } while (exists);
+
+    let pos;
+    do {
+        pos = parseInt(prompt(
+            "Nhập vị trí:\n1. Thủ môn\n2. Hậu vệ\n3. Tiền vệ\n4. Tiền đạo"
+        ));
+    } while (pos < 1 || pos > 4);
+
+    let positionName = "";
+    if (pos === 1) positionName = "Thủ môn";
+    else if (pos === 2) positionName = "Hậu vệ";
+    else if (pos === 3) positionName = "Tiền vệ";
+    else positionName = "Tiền đạo";
+
+    playerIds.push(id);
+    playerPositions.push(positionName);
+}
+
+function printTeamRoster() {
+    for (let i = 0; i < playerIds.length; i++) {
+        console.log(
+            (i + 1) + ". " + playerIds[i] + " - " + playerPositions[i]
+        );
+    }
+}
+
+function findPlayersByPosition(position) {
+    let indexes = [];
+    for (let i = 0; i < playerPositions.length; i++) {
+        if (playerPositions[i] === position) {
+            indexes.push(i);
+        }
+    }
+    return indexes;
+}
+
+printTeamRoster();
+
+let searchPos = prompt(
+    "Nhập vị trí cần tìm (Thủ môn / Hậu vệ / Tiền vệ / Tiền đạo):"
+);
+
+let result = findPlayersByPosition(searchPos);
+console.log("Chỉ số cầu thủ ở vị trí " + searchPos + ":", result);
+
+    </script>
+</body>
+</html>
