@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function reportTopPerformers(minPerformance, players) {
+
+    const total = players
+        .map(p => {
+            const parts = p.split(" - ");
+            const name = parts[0];
+            const goals = parseInt(parts[2]);
+            const assists = parseInt(parts[3]);
+            return { name, performance: goals + assists };
+        })
+        .filter(player => player.performance >= minPerformance)
+        .map(player => {
+            const line = `${player.name}: ${player.performance}`;
+            console.log(line);
+            return player.performance;
+        })
+        .reduce((sum, perf) => sum + perf, 0);
+
+    console.log(`Tổng hiệu suất: ${total}`);
+    return total;
+}
+    </script>
+</body>
+</html>
