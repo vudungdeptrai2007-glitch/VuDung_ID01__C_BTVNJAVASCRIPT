@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let squad = [
+
+    { id: 1, name: "Nguyen Van A", goals: 10, position: "FW" },
+    { id: 2, name: "Tran Van B", goals: 5,  position: "MF" },
+    { id: 3, name: "Le Van C",   goals: 0,  position: "DF" },
+    { id: 4, name: "Pham Van D", goals: 12, position: "FW" },
+    { id: 5, name: "Dang Van E", goals: 0,  position: "GK" }
+
+];
+
+while (true) {
+
+    let choice = prompt(
+        "--- FOOTBALL MANAGER PRO ---\n" +
+        "1. Xem đội hình\n" +
+        "2. Thêm cầu thủ\n" +
+        "3. Tìm kiếm (theo ID)\n" +
+        "4. Cập nhật bàn thắng\n" +
+        "5. Xóa cầu thủ\n" +
+        "0. Thoát\n\n" +
+        "Bạn chọn:"
+    );
+
+    switch (choice) {
+
+        case "1":
+
+            console.log("=== DANH SÁCH ĐỘI BÓNG ===");
+
+            squad.forEach(function(player) {
+
+                console.log(
+                    "Mã " + player.id +
+                    " - " + player.name +
+                    " (" + player.position + "): " +
+                    player.goals + " bàn"
+                );
+
+            });
+
+        break;
+
+
+        case "2":
+
+            let name = prompt("Nhập tên cầu thủ:");
+            let goals = Number(prompt("Nhập số bàn thắng:"));
+            let position = prompt("Nhập vị trí:");
+
+            let newId = squad.length + 1;
+
+            let newPlayer = {
+                id: newId,
+                name: name,
+                goals: goals,
+                position: position
+            };
+
+            squad.push(newPlayer);
+
+            console.log("Đã thêm cầu thủ thành công");
+
+        break;
+
+
+        case "3":
+
+            let searchId = Number(prompt("Nhập ID cầu thủ cần tìm:"));
+
+            let foundPlayer = squad.find(function(player) {
+                return player.id === searchId;
+            });
+
+            if (foundPlayer) {
+
+                console.log("=== THÔNG TIN CẦU THỦ ===");
+                console.log(foundPlayer);
+
+            } else {
+
+                console.log("Không tìm thấy cầu thủ");
+
+            }
+
+        break;
+
+
+        case "4":
+
+            let updateId = Number(prompt("Nhập ID cầu thủ vừa ghi bàn:"));
+
+            let playerToUpdate = squad.find(function(player) {
+                return player.id === updateId;
+            });
+
+            if (playerToUpdate) {
+
+                playerToUpdate.goals++;
+
+                console.log(
+                    "Đã cập nhật: " +
+                    playerToUpdate.name +
+                    " hiện có " +
+                    playerToUpdate.goals +
+                    " bàn thắng"
+                );
+
+            } else {
+
+                console.log("Không tìm thấy cầu thủ");
+
+            }
+
+        break;
+
+
+        case "5":
+
+            let deleteId = Number(prompt("Nhập ID cầu thủ cần xóa:"));
+
+            let index = squad.findIndex(function(player) {
+                return player.id === deleteId;
+            });
+
+            if (index !== -1) {
+
+                squad.splice(index, 1);
+
+                console.log("Đã xóa cầu thủ");
+
+            } else {
+
+                console.log("Không tìm thấy cầu thủ");
+
+            }
+
+        break;
+
+
+        case "0":
+
+            console.log("Thoát chương trình");
+            break;
+
+
+        default:
+
+            console.log("Lựa chọn không hợp lệ");
+
+    }
+
+    if (choice === "0") {
+        break;
+    }
+
+}
+    </script>
+</body>
+</html>

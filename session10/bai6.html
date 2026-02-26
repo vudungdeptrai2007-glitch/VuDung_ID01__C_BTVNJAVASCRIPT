@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function generateRankingReport(minMatches, players) {
+    let ranked = players
+        .map((player, index) => ({ ...player, index }))
+        .filter(player => player.matches >= minMatches)
+        .map(player => {
+            let performanceScore = Number(((player.goals + player.assists) / player.matches).toFixed(2));
+            let efficiencyScore = Number((performanceScore - (player.yellowCards / player.matches) * 10).toFixed(2));
+            return { ...player, performanceScore, efficiencyScore };
+        })
+        .sort((a, b) => {
+            if (b.efficiencyScore !== a.efficiencyScore)
+                return b.efficiencyScore - a.efficiencyScore;
+            if (b.performanceScore !== a.performanceScore)
+                return b.performanceScore - a.performanceScore;
+            if (b.goals !== a.goals)
+                return b.goals - a.goals;
+            return a.index - b.index;
+        });
+
+    console.log("XẾP HẠNG ĐỘI BÓNG (từ minMatches trở lên)\n");
+
+    ranked.forEach((player, i) => {
+        console.log(
+            `${i + 1}. ${player.name} - Efficiency: ${player.efficiencyScore.toFixed(2)} | Performance: ${player.performanceScore.toFixed(2)} | Goals: ${player.goals}\n`
+        );
+    });
+
+    console.log(`Tổng số cầu thủ xếp hạng: ${ranked.length}`);
+
+    if (ranked.length > 0) {
+        console.log(`Cầu thủ xuất sắc nhất: ${ranked[0].name}`);
+        let top3 = ranked.slice(0, 3);
+        let avgEfficiency = Number(
+            (top3.reduce((sum, p) => sum + p.efficiencyScore, 0) / top3.length).toFixed(2)
+        );
+        console.log(`Trung bình efficiency top 3: ${avgEfficiency}`);
+    }
+}
+    </script>
+</body>
+</html>

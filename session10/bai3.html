@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let players = [
+    { name: "Player A", goals: 10 },
+    { name: "Player B", goals: 25 },
+    { name: "Player C", goals: 4 },
+    { name: "Player D", goals: 18 },
+    { name: "Player E", goals: 29 }
+];
+
+function getFilteredTotalGoals(minGoals, teamPlayers) {
+    let total = teamPlayers
+        .filter(player => player.goals >= minGoals)
+        .reduce((sum, player) => sum + player.goals, 0);
+
+    return total;
+}
+
+let result1 = getFilteredTotalGoals(5, players);
+console.log("Tổng các bàn thắng của các cầu thủ đạt đủ chỉ tiêu là :", result1);
+
+let result2 = getFilteredTotalGoals(50, players);
+console.log("Tổng các bàn thắng của các cầu thủ đạt đủ chỉ tiêu là :", result2);
+    </script>
+    
+</body>
+</html>

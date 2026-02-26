@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function generatePlayerSeasonReport(playerName, teamHistory) {
+    let player = teamHistory.find(p => p.name === playerName);
+
+    if (!player) {
+        return `Không tìm thấy cầu thủ ${playerName}`;
+    }
+
+    let seasons = Object.entries(player.seasons);
+
+    let careerStats = seasons.reduce((acc, [seasonName, data]) => {
+        acc.totalMatches += data.matches;
+        acc.totalGoals += data.goals;
+        acc.totalAssists += data.assists;
+        acc.totalYellowCards += data.yellowCards;
+
+        if (
+            !acc.bestSeason ||
+            data.goals > acc.bestSeason.goals ||
+            (data.goals === acc.bestSeason.goals &&
+             data.assists > acc.bestSeason.assists)
+        ) {
+            acc.bestSeason = {
+                season: seasonName,
+                goals: data.goals,
+                assists: data.assists
+            };
+        }
+
+        return acc;
+    }, {
+        totalMatches: 0,
+        totalGoals: 0,
+        totalAssists: 0,
+        totalYellowCards: 0,
+        bestSeason: null
+    });
+
+    careerStats.averageGoalsPerMatch = Number(
+        (careerStats.totalGoals / careerStats.totalMatches).toFixed(2)
+    );
+
+    careerStats.averageAssistsPerMatch = Number(
+        (careerStats.totalAssists / careerStats.totalMatches).toFixed(2)
+    );
+
+    return {
+        name: player.name,
+        position: player.position,
+        nationality: player.nationality,
+        careerStats
+    };
+}
+
+console.log(generatePlayerSeasonReport("Messi", teamHistory));
+    </script>
+</body>
+</html>
