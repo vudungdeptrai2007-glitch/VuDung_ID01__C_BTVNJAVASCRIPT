@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+   let names = ["Laptop", "Chuột", "Bàn phím", "Màn hình", "Tai nghe"];
+let prices = [1500, 200, 800, 1200, 400];
+let stocks = [5, 0, 12, 3, 0];
+
+while (true) {
+    let choice = prompt(
+        "===== QUẢN LÝ KHO HÀNG =====\n" +
+        "1. Lọc sản phẩm cao cấp (>500)\n" +
+        "2. Kiểm định trạng thái dữ liệu\n" +
+        "3. Tính tổng giá trị kho\n" +
+        "4. Giảm giá 10% tất cả sản phẩm\n" +
+        "5. Tìm sản phẩm theo từ khóa\n" +
+        "6. Báo cáo tồn kho\n" +
+        "7. Thoát\n" +
+        "Chọn chức năng (1-7):"
+    );
+
+    if (choice === "1") {
+        let premium = names.filter((n, i) => prices[i] > 500);
+        alert(
+            premium.length > 0
+                ? "Sản phẩm cao cấp:\n" + premium.join("\n")
+                : "Không có sản phẩm cao cấp"
+        );
+    }
+
+    else if (choice === "2") {
+        let hasOutOfStock = stocks.some(s => s === 0);
+        let allAbove100 = prices.every(p => p > 100);
+
+        alert(
+            "Có sản phẩm hết hàng: " + (hasOutOfStock ? "Có" : "Không") + "\n" +
+            "Tất cả giá > 100: " + (allAbove100 ? "Có" : "Không")
+        );
+    }
+
+    else if (choice === "3") {
+        let total = prices.reduce((sum, price, i) => sum + price * stocks[i], 0);
+        alert("Tổng giá trị kho: " + total);
+    }
+
+    else if (choice === "4") {
+        prices = prices.map(p => p * 0.9);
+        alert("Đã giảm giá 10% tất cả sản phẩm");
+    }
+
+    else if (choice === "5") {
+        let keyword = prompt("Nhập từ khóa tìm kiếm:").toLowerCase();
+
+        let results = names
+            .map((n, i) => ({
+                name: n,
+                price: prices[i],
+                stock: stocks[i]
+            }))
+            .filter(p => p.name.toLowerCase().includes(keyword));
+
+        if (results.length === 0) {
+            alert("Không tìm thấy sản phẩm");
+        } else {
+            let output = results
+                .map(p => `${p.name} - Giá: ${p.price} - SL: ${p.stock}`)
+                .join("\n");
+            alert(output);
+        }
+    }
+
+    else if (choice === "6") {
+        let report = names
+            .map((n, i) => `${n} - ${stocks[i] > 0 ? "Còn hàng" : "Hết hàng"}`)
+            .join("\n");
+
+        alert(report);
+    }
+
+    else if (choice === "7") {
+        alert("Thoát chương trình");
+        break;
+    }
+
+    else {
+        alert("Lựa chọn không hợp lệ");
+    }
+}
+
+    </script>
+</body>
+</html>
