@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script>
+
+let students = [];
+let running = true;
+
+while (running) {
+
+    let choice = prompt(
+        "===== STUDENT MANAGEMENT SYSTEM =====\n" +
+        "1. Create Student\n" +
+        "2. Read All Students\n" +
+        "3. Filter Scholarship Candidates (GPA > 8)\n" +
+        "4. Update Student Profile\n" +
+        "5. Delete Record\n" +
+        "6. Compliance Verification\n" +
+        "7. Academic Statistics\n" +
+        "8. Data Normalization (UPPERCASE Name)\n" +
+        "0. Exit\n" +
+        "Choose option:"
+    );
+
+    switch (choice) {
+
+        // ================= CREATE =================
+        case "1":
+            let id = prompt("Enter ID:");
+            let name = prompt("Enter Name:");
+            let age = Number(prompt("Enter Age:"));
+            let gpa = Number(prompt("Enter GPA:"));
+            let status = prompt("Enter Status (active/inactive):");
+
+            let student = {
+                id: id,
+                name: name,
+                age: age,
+                gpa: gpa,
+                status: status
+            };
+
+            students.push(student);
+            alert("Student added successfully!");
+            break;
+
+        // ================= READ =================
+        case "2":
+            if (students.length === 0) {
+                alert("No students found!");
+            } else {
+                let output = "===== STUDENT LIST =====\n";
+                students.forEach(s => {
+                    output += `ID: ${s.id} | Name: ${s.name} | Age: ${s.age} | GPA: ${s.gpa} | Status: ${s.status}\n`;
+                });
+                console.log(output);
+                alert("Check console to see student list.");
+            }
+            break;
+
+
+        // ================= FILTER GPA > 8 =================
+        case "3":
+            let scholarship = students.filter(s => s.gpa > 8);
+            if (scholarship.length === 0) {
+                alert("No scholarship candidates found!");
+            } else {
+                console.log("===== SCHOLARSHIP STUDENTS =====");
+                console.log(scholarship);
+                alert("Check console for scholarship list.");
+            }
+            break;
+
+
+        // ================= UPDATE =================
+        case "4":
+            let updateId = prompt("Enter ID to update:");
+            let foundStudent = students.find(s => s.id === updateId);
+
+            if (foundStudent) {
+                foundStudent.name = prompt("Enter new name:");
+                foundStudent.gpa = Number(prompt("Enter new GPA:"));
+                alert("Student updated successfully!");
+            } else {
+                alert("Student not found!");
+            }
+            break;
+
+
+        // ================= DELETE =================
+        case "5":
+            let deleteId = prompt("Enter ID to delete:");
+            let index = students.findIndex(s => s.id === deleteId);
+
+            if (index !== -1) {
+                students.splice(index, 1);
+                alert("Student deleted successfully!");
+            } else {
+                alert("Student not found!");
+            }
+            break;
+
+
+        // ================= COMPLIANCE =================
+        case "6":
+            let hasUnder18 = students.some(s => s.age < 18);
+            let allActive = students.every(s => s.status === "active");
+
+            console.log("Has student under 18:", hasUnder18);
+            console.log("All students active:", allActive);
+
+            alert("Check console for compliance results.");
+            break;
+
+
+        // ================= STATISTICS =================
+        case "7":
+            if (students.length === 0) {
+                alert("No students to calculate!");
+            } else {
+                let totalGpa = students.reduce((sum, s) => sum + s.gpa, 0);
+                let avgGpa = totalGpa / students.length;
+
+                console.log("Average GPA:", avgGpa.toFixed(2));
+                alert("Check console for average GPA.");
+            }
+            break;
+
+
+        // ================= NORMALIZATION =================
+        case "8":
+            let normalizedList = students.map(s => {
+                return {
+                    ...s,
+                    name: s.name.toUpperCase()
+                };
+            });
+
+            console.log("===== NORMALIZED LIST =====");
+            console.log(normalizedList);
+            alert("Check console for normalized list.");
+            break;
+
+
+        // ================= EXIT =================
+        case "0":
+            running = false;
+            alert("Program terminated.");
+            break;
+
+        default:
+            alert("Invalid option!");
+    }
+}
+
+</script>
+</body>
+</html>
