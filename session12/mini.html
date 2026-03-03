@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Manager Advanced</title>
+</head>
+<body>
+<script>
+
+
+let students = [];
+
+
+function generateTimestamp() {
+    return Date.now();
+}
+
+function findStudentById(id) {
+    return students.find(s => s.id === id);
+}
+
+function validateAge(age) {
+    return age >= 16 && age <= 60;
+}
+
+function validateGpa(gpa) {
+    return gpa >= 0 && gpa <= 10;
+}
+
+function inputStudentData(isUpdate = false, oldData = null) {
+    let id, name, age, gpa, status;
+
+    if (!isUpdate) {
+        id = prompt("Enter ID:");
+        if (findStudentById(id)) {
+            alert("ID already exists!");
+            return null;
+        }
+    } else {
+        id = oldData.id;
+    }
+
+    name = prompt("Enter Name:" + (isUpdate ? " (Enter to skip)" : ""));
+    age = prompt("Enter Age (16-60):" + (isUpdate ? " (Enter to skip)" : ""));
+    gpa = prompt("Enter GPA (0-10):" + (isUpdate ? " (Enter to skip)" : ""));
+    status = prompt('Enter Status ("active" / "inactive"):' + (isUpdate ? " (Enter to skip)" : ""));
+
+    if (!isUpdate) {
+        if (!validateAge(+age) || !validateGpa(+gpa) || !["active","inactive"].includes(status)) {
+            alert("Invalid data!");
+            return null;
+        }
+    }
+
+    return {
+        id,
+        name: name || oldData?.name,
+        age: age ? +age : oldData?.age,
+        gpa: gpa ? +gpa : oldData?.gpa,
+        status: status || oldData?.status
+    };
+}
+
+
+function createStudent() {
+    let data = inputStudentData();
+    if (!data) return;
+
+    data.createdAt = generateTimestamp();
+    data.updatedAt = null;
+    data.deletedAt = null;
+
+    students.push(data);
+    alert("Student created!");
+}
+
+function updateStudent() {
+    let id = prompt("Enter ID to update:");
+    let student = findStudentById(id);
+    if (!student) {
+        alert("Not found!");
+        return;
+    }
+
+    let newData = inputStudentData(true, student);
+    if (!newData) return;
+
+    student.name = newData.name;
+    student.age = newData.age;
+    student.gpa = newData.gpa;
+    student.status = newData.status;
+    student.updatedAt = generateTimestamp();
+
+    alert("Updated successfully!");
+}
+
+function softDeleteStudent() {
+    let id = prompt("Enter ID to delete:");
+    let student = findStudentById(id);
+    if (!student) {
+        alert("Not found!");
+        return;
+    }
+
+    let confirmDelete = confirm("Are you sure?");
+    if (!confirmDelete) return;
+
+    student.status = "inactive";
+    student.deletedAt = generateTimestamp();
+
+    alert("Soft deleted!");
+}
+
+function restoreStudent() {
+    let id = prompt("Enter ID to restore:");
+    let student = findStudentById(id);
+    if (!student) {
+        alert("Not found!");
+        return;
+    }
+
+    student.status = "active";
+    student.updatedAt = generateTimestamp();
+    student.deletedAt = null;
+
+    alert("Restored!");
+}
+
+function viewStudents() {
+    let data = [...students];
+
+
+    let keyword = prompt("Search name (Enter to skip):");
+    if (keyword) {
+        data = data.filter(s => s.name.toLowerCase().includes(keyword.toLowerCase()));
+    }
+
+
+    let filterStatus = prompt('Filter status ("active"/"inactive"/Enter to skip):');
+    if (filterStatus) {
+        data = data.filter(s => s.status === filterStatus);
+    }
+
+
+    let sortOrder = prompt('Sort GPA ("asc"/"desc"/Enter to skip):');
+    if (sortOrder === "asc") {
+        data.sort((a,b) => a.gpa - b.gpa);
+    } else if (sortOrder === "desc") {
+        data.sort((a,b) => b.gpa - a.gpa);
+    }
+
+
+    const pageSize = 5;
+    let currentPage = 1;
+    let totalPages = Math.ceil(data.length / pageSize);
+
+    if (totalPages === 0) {
+        alert("No data!");
+        return;
+    }
+
+    let nav;
+    do {
+        let start = (currentPage - 1) * pageSize;
+        let pageData = data.slice(start, start + pageSize);
+
+        console.clear();
+        console.log("Page:", currentPage, "/", totalPages);
+        console.table(pageData);
+
+        nav = prompt("First | Last | Next | Prev | Exit");
+
+        if (nav === "First") currentPage = 1;
+        else if (nav === "Last") currentPage = totalPages;
+        else if (nav === "Next" && currentPage < totalPages) currentPage++;
+        else if (nav === "Prev" && currentPage > 1) currentPage--;
+
+    } while (nav !== "Exit");
+}
+
+
+function analyticsDashboard() {
+
+    let total = students.length;
+    let stats = students.reduce((acc, s) => {
+        acc.total++;
+        acc[s.status]++;
+        acc.gpaSum += s.gpa;
+        if (s.gpa === 0) acc.zeroGpa.push(s);
+        if (s.gpa < 3) acc.risk.push(s);
+        return acc;
+    }, {
+        total: 0,
+        active: 0,
+        inactive: 0,
+        gpaSum: 0,
+        zeroGpa: [],
+        risk: []
+    });
+
+    console.clear();
+    console.log("===== DASHBOARD =====");
+    console.log("Total:", stats.total);
+    console.log("Active:", stats.active);
+    console.log("Inactive:", stats.inactive);
+    console.log("Avg GPA:", (stats.gpaSum / (stats.total || 1)).toFixed(2));
+
+    console.log("Zero GPA:", stats.zeroGpa);
+    console.log("Risk (<3):", stats.risk);
+    console.log("Total Risk:", stats.risk.length);
+
+
+    let topGpa = [...students].sort((a,b)=>b.gpa-a.gpa).slice(0,5);
+    let youngest = [...students].sort((a,b)=>a.age-b.age).slice(0,5);
+
+    console.log("Top 5 GPA:");
+    console.table(topGpa);
+
+    console.log("Top 5 Youngest:");
+    console.table(youngest);
+
+    alert("Check console for analytics!");
+}
+
+
+let choice;
+do {
+    choice = prompt(`
+==== STUDENT MANAGER ADVANCED ====
+1. Create Student
+2. Update Student
+3. Soft Delete Student
+4. Restore Student
+5. View Students
+6. Analytics Dashboard
+7. Exit
+Choose:
+`);
+
+    switch(choice) {
+        case "1": createStudent(); break;
+        case "2": updateStudent(); break;
+        case "3": softDeleteStudent(); break;
+        case "4": restoreStudent(); break;
+        case "5": viewStudents(); break;
+        case "6": analyticsDashboard(); break;
+        case "7": alert("Goodbye!"); break;
+        default: alert("Invalid choice!");
+    }
+
+} while (choice !== "7");
+
+</script>
+</body>
+</html>
