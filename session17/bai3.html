@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Todo Tết</title>
+<style>
+body { font-family: Arial; background: #f5f5f5; }
+.container { width: 400px; margin: 50px auto; background: white; border-radius: 10px; overflow: hidden; }
+.header { background: #d32f2f; color: white; text-align: center; padding: 15px; }
+.input-group { display: flex; padding: 10px; gap: 10px; }
+.input-group input { flex: 1; padding: 8px; }
+.input-group button { padding: 8px 12px; background: orange; border: none; cursor: pointer; }
+.todo { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h2>Công việc chuẩn bị Tết</h2>
+  </div>
+
+  <div class="input-group">
+    <input type="text" id="taskInput" placeholder="Nhập công việc mới...">
+    <button onclick="addTodo()">Thêm</button>
+  </div>
+
+  <div id="todoList"></div>
+</div>
+
+<script>
+const defaultTodos = [
+  { id: 1, task: "Mua bánh chưng", done: false },
+  { id: 2, task: "Dọn nhà đón Tết", done: false }
+];
+
+function getTodos() {
+  const data = localStorage.getItem("myTodos");
+  return data ? JSON.parse(data) : defaultTodos;
+}
+
+function saveTodos(todos) {
+  localStorage.setItem("myTodos", JSON.stringify(todos));
+}
+
+function renderTodos(list) {
+  const container = document.getElementById("todoList");
+  container.innerHTML = "";
+
+  list.forEach(todo => {
+    const div = document.createElement("div");
+    div.className = "todo";
+    div.innerHTML = `<span>${todo.task}</span>`;
+    container.appendChild(div);
+  });
+}
+
+function addTodo() {
+  const input = document.getElementById("taskInput");
+  const value = input.value.trim();
+
+  if (value === "") return;
+
+  const todos = getTodos();
+
+  const newTodo = {
+    id: Date.now(),
+    task: value,
+    done: false
+  };
+
+  todos.push(newTodo);
+  saveTodos(todos);
+  renderTodos(todos);
+
+  input.value = "";
+}
+
+document.getElementById("taskInput").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    addTodo();
+  }
+});
+
+window.onload = function () {
+  let data = localStorage.getItem("myTodos");
+
+  if (!data) {
+    saveTodos(defaultTodos);
+    renderTodos(defaultTodos);
+  } else {
+    renderTodos(JSON.parse(data));
+  }
+};
+</script>
+
+</body>
+</html>
